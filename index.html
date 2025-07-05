@@ -36,25 +36,32 @@
         }
 
         .photo-container {
-            width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
             margin: 0 auto 20px;
-            border-radius: 50%;
+            border-radius: 15px;
             border: 4px solid rgba(255,255,255,0.3);
             overflow: hidden;
             background: rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
             transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
 
         .photo-container:hover {
             transform: scale(1.05);
         }
 
-        .photo-placeholder {
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .photo-fallback {
             width: 100%;
             height: 100%;
             background: linear-gradient(45deg, #3498db, #2c3e50);
@@ -63,12 +70,6 @@
             justify-content: center;
             font-size: 60px;
             color: white;
-        }
-
-        .profile-photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         .name {
@@ -274,27 +275,6 @@
             margin-top: 8px;
         }
 
-        .file-input {
-            display: none;
-        }
-
-        .upload-btn {
-            background: rgba(255,255,255,0.2);
-            border: 2px dashed rgba(255,255,255,0.5);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-            font-size: 0.9rem;
-        }
-
-        .upload-btn:hover {
-            background: rgba(255,255,255,0.3);
-            border-color: rgba(255,255,255,0.8);
-        }
-
         .highlight {
             background: #fff3cd;
             padding: 2px 4px;
@@ -308,6 +288,17 @@
             border-radius: 5px;
             margin: 10px 0;
             border-left: 4px solid #28a745;
+        }
+
+        .skill-level {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        /* ATS-friendly styles */
+        .ats-keywords {
+            display: none;
         }
 
         @media (max-width: 768px) {
@@ -346,11 +337,11 @@
             }
 
             .photo-container {
-                width: 120px;
-                height: 120px;
+                width: 160px;
+                height: 160px;
             }
 
-            .photo-placeholder {
+            .photo-fallback {
                 font-size: 50px;
             }
         }
@@ -361,24 +352,13 @@
             }
 
             .photo-container {
-                width: 100px;
-                height: 100px;
+                width: 140px;
+                height: 140px;
             }
 
-            .photo-placeholder {
+            .photo-fallback {
                 font-size: 40px;
             }
-        }
-
-        /* ATS-friendly styles */
-        .ats-keywords {
-            display: none;
-        }
-
-        .skill-level {
-            font-size: 0.8rem;
-            color: #6c757d;
-            margin-top: 5px;
         }
 
         @media print {
@@ -413,12 +393,9 @@
 
     <div class="container">
         <header class="header">
-            <div class="photo-container" onclick="document.getElementById('photoInput').click()">
-                <div class="photo-placeholder" id="photoPlaceholder">📷</div>
-            </div>
-            <input type="file" id="photoInput" class="file-input" accept="Ima_Nirmala.jpg">
-            <div class="upload-btn" onclick="document.getElementById('photoInput').click()">
-                📸 Upload Foto
+            <div class="photo-container">
+                <img src="Ima_Nirmala.jpg" alt="Ima Nirmala" class="profile-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="photo-fallback" style="display: none;">📷</div>
             </div>
             <h1 class="name">Ima Nirmala</h1>
             <h2 class="title">Fullstack Developer | Frontend Developer</h2>
@@ -649,19 +626,6 @@
     </div>
 
     <script>
-        // Upload photo functionality
-        document.getElementById('photoInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const photoPlaceholder = document.getElementById('photoPlaceholder');
-                    photoPlaceholder.innerHTML = '<img src="' + e.target.result + '" alt="Profile Photo" class="profile-photo">';
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
         // Smooth scroll animation for skill items
         const skillItems = document.querySelectorAll('.skill-item');
         const observerOptions = {
